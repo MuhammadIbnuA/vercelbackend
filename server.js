@@ -146,7 +146,7 @@ app.post("/api/menu", createMenu);
 app.get("/api/menu/:id", getMenuById);
 
 // Get all menus
-app.get("/api/menu", isAuthenticated, getAllMenus);
+app.get("/api/menu", getAllMenus);
 
 // Update a menu by ID
 app.put("/api/menu/:id", updateMenu);
