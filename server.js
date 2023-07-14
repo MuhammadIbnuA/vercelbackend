@@ -1,28 +1,30 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
-const cors = require("cors")
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-const uri = "mongodb+srv://uciiiiill:kueleker45@mongodbucil.zjjkeha.mongodb.net/?retryWrites=true&w=majority";
+const uri =
+  "mongodb+srv://uciiiiill:kueleker45@mongodbucil.zjjkeha.mongodb.net/?retryWrites=true&w=majority";
 
 // Connect to MongoDB
 const connect = async () => {
   try {
-      mongoose.connect(uri);
-      console.log('Connected to mongoDB!')
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log("Connected to MongoDB!");
   } catch (error) {
-      throw error
-  } 
-}
+    throw error;
+  }
+};
 
-
-
-mongoose.connection.on('disconnected', ()=>{
-  console.log('MongoDB disconnected!')
+mongoose.connection.on("disconnected", () => {
+  console.log("MongoDB disconnected!");
 });
 
 // Menu model
@@ -104,7 +106,11 @@ async function updateMenu(req, res) {
   try {
     const menuId = req.params.id;
     const updateData = req.body;
-    const updatedMenu = await Menu.findByIdAndUpdate(menuId, updateData, { new: true });
+    const updatedMenu = await Menu.findByIdAndUpdate(
+      menuId,
+      updateData,
+      { new: true }
+    );
     if (!updatedMenu) {
       res.status(404).send("Menu not found");
     } else {
@@ -133,6 +139,7 @@ async function deleteMenu(req, res) {
 }
 
 // Routes
+// Create a new menu
 app.post("/api/menu", createMenu);
 
 // Get a menu by ID
@@ -148,7 +155,9 @@ app.put("/api/menu/:id", updateMenu);
 app.delete("/api/menu/:id", deleteMenu);
 
 // Start the server
-app.listen(5999, () => {
-  connect()
-  console.log(`Server is running on port 5999`);
+connect().then(() => {
+  const port = process.env.PORT || 5999;
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
 });
