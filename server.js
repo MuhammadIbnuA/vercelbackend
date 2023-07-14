@@ -133,20 +133,19 @@ async function deleteMenu(req, res) {
 }
 
 // Routes
-// Create a new menu
-app.post("/menu", createMenu);
+app.post("/api/menu", createMenu);
 
 // Get a menu by ID
-app.get("/menu/:id", getMenuById);
+app.get("/api/menu/:id", getMenuById);
 
 // Get all menus
-app.get("/menu", isAuthenticated, getAllMenus);
+app.get("/api/menu", isAuthenticated, getAllMenus);
 
 // Update a menu by ID
-app.put("/menu/:id", updateMenu);
+app.put("/api/menu/:id", updateMenu);
 
 // Delete a menu by ID
-app.delete("/menu/:id", deleteMenu);
+app.delete("/api/menu/:id", deleteMenu);
 
 // Start the server
 app.listen(5999, () => {
